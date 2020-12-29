@@ -61,4 +61,8 @@ The project will include a web app where an emergency worker can input a new mes
     .Pynb : File contianing EDA and findings
 
     README.md
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> bcff0b7d86df792fae0b6e8cd5b7643ee8041129
