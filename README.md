@@ -5,14 +5,14 @@
 This project was created and run using Python version 3.0.
 And it uses those libraries
 
-*sys
-*pandas
-*numpy
-*sqlalchemy
-*pickle
-*re
-*nltk
-*sklearn
+* sys
+* pandas
+* numpy
+* sqlalchemy
+* pickle
+* re
+* nltk
+* sklearn
 
 
 ## Instructions:
