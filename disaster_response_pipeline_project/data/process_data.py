@@ -1,16 +1,58 @@
 import sys
-
+import pandas as pd
+import numpy as np
+from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
-    pass
+    '''
+    Load the data from the csv's and return a combined dataframe
+    Params:
+      messages_filepath(string): File path of the messages csv
+      categories_filepath(string) : File path of the categories csv
+    Return:
+      df(dataframe):  dataframe of the combined files
+    '''
+    messages = pd.read_csv(messages_filepath)
+    categories = pd.read_csv(categories_filepath)
+    categories_id = categories["id"]
 
+    df = messages.join(categories.set_index('id'), on='id')    
+    return df
 
 def clean_data(df):
-    pass
-
+    '''
+    Clean the df dataframe and return a dataframe with the messages and numerical values for the categories
+    
+    Params:
+      df(dataframe): Messages and categories
+    Return:
+      df(dataframe): cleaned dataframe
+    '''
+    categories = df["categories"].str.split(";",expand=True)
+    row = categories.loc[:0]
+    category_colnames = row.apply(lambda x: x.str[0:-2], axis=0)
+    categories.columns = category_colnames.values[0]
+    
+    for column in categories:
+        categories[column] = categories[column].apply(lambda x: x[-1])
+        categories[column] = categories[column].astype('int32')
+    
+    df = pd.concat([df, categories], axis=1)
+    df.drop(columns=['categories'],inplace=True)
+    df.drop_duplicates(inplace=True)
+    return df
 
 def save_data(df, database_filename):
-    pass  
+    '''
+    Save the df dataframe and to a database
+    
+    Params:
+      df(dataframe): dataframe
+      database_filename(string) : File path for the database
+    Return:
+    '''
+    engine = create_engine('sqlite:///{}'.format(database_filename))
+    df.to_sql('etl_pipeline', engine, index=False)  
 
 
 def main():
