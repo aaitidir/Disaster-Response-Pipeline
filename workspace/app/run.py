@@ -31,11 +31,7 @@ engine = create_engine('sqlite:///../data/DisasterResponse.db')
 df = pd.read_sql_table('etl_pipeline', engine)
 
 # load model
-<<<<<<< HEAD
 model = joblib.load("../models/classifier.pkl")
-=======
-model = joblib.load("../models/disaster_model.pkl")
->>>>>>> bcff0b7d86df792fae0b6e8cd5b7643ee8041129
 
 
 # index webpage displays cool visuals and receives user input text for model
@@ -158,8 +154,4 @@ def main():
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
     main()
-=======
-    main()
->>>>>>> bcff0b7d86df792fae0b6e8cd5b7643ee8041129

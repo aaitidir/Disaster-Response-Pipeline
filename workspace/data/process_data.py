@@ -28,7 +28,6 @@ def clean_data(df):
     Return:
       df(dataframe): cleaned dataframe
     '''
-<<<<<<< HEAD
     # create a dataframe of the 36 individual category columns
     categories = df["categories"].str.split(";",expand=True)
     row = categories.loc[:0]
@@ -38,27 +37,14 @@ def clean_data(df):
     categories.columns = category_colnames.values[0]
     # set each value to be the last character of the string
     # and convert column from string to numeric
-=======
-    categories = df["categories"].str.split(";",expand=True)
-    row = categories.loc[:0]
-    category_colnames = row.apply(lambda x: x.str[0:-2], axis=0)
-    categories.columns = category_colnames.values[0]
+    for column in categories:    
+    	categories[column] = categories[column].apply(lambda x: 0 if x[-1]=="0" else 1 if (pd.to_numeric(x[-1])>0) else np.nan)
     
->>>>>>> bcff0b7d86df792fae0b6e8cd5b7643ee8041129
-    for column in categories:
-        categories[column] = categories[column].apply(lambda x: x[-1])
-        categories[column] = categories[column].astype('int32')
-    
-<<<<<<< HEAD
     # concatenate the original dataframe with the new `categories` dataframe
     df = pd.concat([df, categories], axis=1)
     #Drop the categories column from the df dataframe since it is no longer needed.
     df.drop(columns=['categories'],inplace=True)
     # drop duplicates
-=======
-    df = pd.concat([df, categories], axis=1)
-    df.drop(columns=['categories'],inplace=True)
->>>>>>> bcff0b7d86df792fae0b6e8cd5b7643ee8041129
     df.drop_duplicates(inplace=True)
     return df
 
@@ -72,7 +58,7 @@ def save_data(df, database_filename):
     Return:
     '''
     engine = create_engine('sqlite:///{}'.format(database_filename))
-    df.to_sql('etl_pipeline', engine, index=False)  
+    df.to_sql('etl_pipeline', engine, index=False,if_exists='replace')  
 
 
 def main():
@@ -102,8 +88,5 @@ def main():
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
     main()
-=======
-    main()
->>>>>>> bcff0b7d86df792fae0b6e8cd5b7643ee8041129
+
